@@ -41,7 +41,7 @@ menuItem_cwee <- function (text, ..., icon = NULL, badgeLabel = NULL, badgeColor
     badgeTag <- NULL
   }
   if (length(subItems) == 0) {
-    return(tags$li(a(href = if(!disable) href else '#', style = if(disable) 'color:#D0D0D0;',
+    return(tags$li(a(href = href, style = if(disable) 'color:#D0D0D0;',
                      `data-toggle` = if (isTabItem) "tab", `data-value` = if (!is.null(tabName)) tabName,
                      target = target, icon, span(text), badgeTag)))
   }

@@ -4,7 +4,7 @@
 \alias{pzPlot_ggplot}
 \title{pzPlot_ggplot}
 \usage{
-pzPlot_ggplot(dat, variable)
+pzPlot_ggplot(dat, var, label, clrs)
 }
 \description{
 pzPlot_ggplot

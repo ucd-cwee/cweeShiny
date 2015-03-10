@@ -5,22 +5,21 @@
 #' @export
 
 mapControls_ggplot <- function() {
-    radioButtons("map_var", "Variable:",
-                 c("Energy Intensity (kWh/MG)" = "EI_kWh_MG",
-                   "Water Consumption (MG)" = "Consumption_MG",
-                   "Energy Consumption (kWh)" = "Energy_kWh"))
+    radioButtons("map_var", "Map Variable:",
+                 c("Water Consumption (MG)" = "Consumption",,
+                   "Energy Intensity (kWh/MG)" = "Energy_Intensity",
+                   "Embedded Energy (kWh/year)" = "Embedded_Energy"))
 }
 
 #' pzPlot_ggplot
 #' 
 #' @import ggplot2
+#' @import scales
 #' @export
 
-pzPlot_ggplot <- function(dat, variable) {
+pzPlot_ggplot <- function(dat, var, label, clrs) {
   
-  
-  ggplot(dat, aes(long, lat, group=group)) +
-    geom_path(color="black") +
+  p <- ggplot(dat, aes(long, lat, group=group)) +
     coord_equal() +
     scale_x_continuous(expand = c(0.01, 0.01)) +
     scale_y_continuous(expand = c(0.01, 0.01)) +
@@ -32,7 +31,15 @@ pzPlot_ggplot <- function(dat, variable) {
           axis.title.y=element_blank(),
           panel.grid.major=element_blank(),
           panel.grid.minor=element_blank(),
-          panel.background = element_blank()) +
-    theme(legend.title = element_text(size = 18, face = "bold"),
+          panel.background = element_blank(),
+          legend.title = element_text(size = 18, face = "bold"),
           legend.text = element_text(size = 16))
+  
+  if (!missing(var)) p <- p + geom_polygon(aes_string(fill=as.character(var)))
+  lab <- ifelse(missing(label), ifelse(missing(var), NULL, as.character(var)), as.character(label))
+  if (!missing(clrs)) p <- p + scale_fill_gradientn(name=lab, colours=clrs, na.value = 'gray50', guide = 'colourbar', labels=comma)
+  
+  p <- p + geom_path(color="black")
+  
+  p
 }
