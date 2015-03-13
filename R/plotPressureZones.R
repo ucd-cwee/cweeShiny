@@ -4,12 +4,12 @@
 #' @import shinydashboard
 #' @export
 
-mapControls_ggplot <- function() {
-    radioButtons("map_var", "Map Variable:",
-                 c("Water Consumption (MG)" = "Consumption",,
-                   "Energy Intensity (kWh/MG)" = "Energy_Intensity",
-                   "Embedded Energy (kWh/year)" = "Embedded_Energy"))
-}
+#mapControls_ggplot <- function() {
+#    radioButtons("map_var", "Map Variable:",
+#                 c("Water Consumption (MG)" = "Consumption",,
+#                   "Energy Intensity (kWh/MG)" = "Energy_Intensity",
+#                   "Embedded Energy (kWh/year)" = "Embedded_Energy"))
+#}
 
 #' pzPlot_ggplot
 #' 
@@ -42,4 +42,17 @@ pzPlot_ggplot <- function(dat, var, label, clrs) {
   p <- p + geom_path(color="black")
   
   p
+}
+
+#' pzPlot_leaflet
+#' 
+#' @import leaflet
+#' @export
+
+pzPlot_leaflet <- function(dat, pop) {
+  leaflet(dat) %>%
+    addTiles(urlTemplate = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{z}/{y}/{x}") %>%
+    addTiles(urlTemplate = "http://{s}.tile.stamen.com/toner-lines/{z}/{x}/{y}.png") %>%
+    addPolygons(color='white', weight = 1, opacity = 0.9, fillColor = ~color, fillOpacity = 0.9, popup=pop) %>% 
+    mapOptions(zoomToLimits = "first")
 }

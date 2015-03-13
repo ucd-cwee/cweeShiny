@@ -1,9 +1,8 @@
 Package: cweeShiny
 Type: Package
-Title: What the package does (short line)
-Version: 1.0
+Title: Functions for water-energy apps
+Version: 0.1
 Date: 2015-03-06
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Authors@R: person("Andrew", "Holguin", email = "ajholguin@ucdavis.edu", role = c("aut", "cre"))
+Description: Functions for water-energy apps
+License: file LICENSE

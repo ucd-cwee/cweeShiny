@@ -2,11 +2,11 @@
 % Please edit documentation in R/plotPressureZones.R
 \name{pzPlot_ggplot}
 \alias{pzPlot_ggplot}
-\title{pzPlot_ggplot}
+\title{mapControls_ggplot}
 \usage{
 pzPlot_ggplot(dat, var, label, clrs)
 }
 \description{
-pzPlot_ggplot
+mapControls_ggplot
 }
 
