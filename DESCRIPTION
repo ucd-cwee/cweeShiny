@@ -7,7 +7,7 @@ Authors@R: person("Andrew", "Holguin", email = "ajholguin@ucdavis.edu", role = c
 Description: Functions for water-energy apps
 License: MIT + file LICENSE
 Imports:
-  gplot2,
+  ggplot2,
   leaflet,
   scales,
   shiny,
