@@ -55,7 +55,7 @@ plotLoadProfile_ggplot <- function (dat, var, type, color, labelMax=FALSE, yRng)
 #' @return \code{NULL}
 #' @export
 
-plotLoadProfile_dygraph <- function (dat, type) {
+plotLoadProfile_dygraph <- function (dat, var, type) {
   
   if (type == "Weekday") {
     days <- c(2,3,4,5,6)
@@ -66,21 +66,21 @@ plotLoadProfile_dygraph <- function (dat, type) {
   plot_dat <- dat %>%
     filter(dow %in% days) %>%
     group_by(hour) %>%
-    summarize(kW = mean(kW, na.rm=TRUE))
+    summarise_(var = lazyeval::interp(~mean(var, na.rm = TRUE), var = as.name(var)))
   
   plot_dat_all <- dat %>%
     filter(dow %in% days) %>%
     group_by(year,season,month,week,day,hour) %>%
-    summarize(kW = mean(kW, na.rm=TRUE)) %>%
+    summarise_(var = lazyeval::interp(~mean(var, na.rm = TRUE), var = as.name(var))) %>%
     mutate(id = paste0(year,week,day))
   
-  plot_dat_ts <- setNames(xts(as.matrix(plot_dat$kW), order.by = as.POSIXct(strptime(paste(1,1,1,plot_dat$hour), format = "%Y %m %d %H"))), 'kW_mean')
+  plot_dat_ts <- setNames(xts(as.matrix(plot_dat$var), order.by = as.POSIXct(strptime(paste(1,1,1,plot_dat$hour), format = "%Y %m %d %H"))), paste0(var,'_mean'))
   
-  yrng <- ggplot_build(qplot(hour, kW, data=plot_dat_all))$panel$ranges[[1]]$y.range
+  yrng <- c(0,round(qnorm(0.99, mean=mean(plot_dat_all$var, na.rm=TRUE), sd=sd(plot_dat_all$var, na.rm=TRUE))))
   
   dygraph(plot_dat_ts, main = paste(type, 'Average'), group = "plotLoadProfile") %>%
     dyAxis(name='x', label='hour') %>%
-    dyAxis(name='y', label='kW', valueRange=yrng) %>%
+    dyAxis(name='y', label=var, valueRange=yrng) %>%
     dyOptions(fillGraph = TRUE, fillAlpha = 0.4, drawPoints = TRUE, pointSize = 2, axisLineWidth = 1.5)
   
 }
