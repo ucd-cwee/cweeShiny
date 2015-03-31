@@ -4,7 +4,7 @@
 \alias{plotHeatmap_8760}
 \title{plotLoadProfile_ggplot}
 \usage{
-plotHeatmap_8760(dat, var, normVar, inclWeekends)
+plotHeatmap_8760(dat, var, normVar, inclWeekends, zRng)
 }
 \arguments{
 \item{dat}{data...}
