@@ -4,7 +4,7 @@
 \alias{plotLoadProfile_ggplot}
 \title{plotLoadProfile_ggplot}
 \usage{
-plotLoadProfile_ggplot(dat, type, color, labelMax)
+plotLoadProfile_ggplot(dat, var, type, color, labelMax = FALSE, yRng)
 }
 \arguments{
 \item{dat}{data...}

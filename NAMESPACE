@@ -2,6 +2,11 @@
 
 export(cwee_css)
 export(menuItem_cwee)
+export(plotFullTS_js_EI)
+export(plotFullTS_js_Water)
+export(plotFullTS_js_kW)
+export(plotFullTS_r)
+export(plotHeatmap_8760)
 export(plotLoadProfile_dygraph)
 export(plotLoadProfile_ggplot)
 export(pzPlot_ggplot)
