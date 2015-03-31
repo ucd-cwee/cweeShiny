@@ -18,11 +18,13 @@ plotLoadProfile_ggplot <- function (dat, var, type, color, labelMax=FALSE, yRng)
   
   plot_dat <- dat %>%
     filter(dow %in% days) %>%
+    filter_(lazyeval::interp(~is.finite(var), var = as.name(var))) %>%
     group_by(hour) %>%
     summarise_(var = lazyeval::interp(~mean(var, na.rm = TRUE), var = as.name(var)))
   
   plot_dat_all <- dat %>%
     filter(dow %in% days) %>%
+    filter_(lazyeval::interp(~is.finite(var), var = as.name(var))) %>%
     group_by(year,season,month,week,day,hour) %>%
     summarise_(var = lazyeval::interp(~mean(var, na.rm = TRUE), var = as.name(var))) %>%
     mutate(id = paste0(year,week,day))

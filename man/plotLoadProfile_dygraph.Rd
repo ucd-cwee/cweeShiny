@@ -4,7 +4,7 @@
 \alias{plotLoadProfile_dygraph}
 \title{plotLoadProfile_dygraph}
 \usage{
-plotLoadProfile_dygraph(dat, type)
+plotLoadProfile_dygraph(dat, var, type)
 }
 \arguments{
 \item{dat}{data...}
