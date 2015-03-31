@@ -96,15 +96,15 @@ plotLoadProfile_dygraph <- function (dat, var, type) {
 #' @return \code{NULL}
 #' @export
 
-plotFullTS_r <- function(dat, inludeZero=TRUE) {
+plotFullTS_r <- function(dat, color='none', inludeZero=TRUE) {
   
-  p <- ggplot(dat, aes(ts, value, group=resource)) +
-    geom_point(aes(color=resource)) +
-    geom_line(aes(color=resource)) +
+  p <- ggplot(dat, aes(ts, value, group=variable)) +
     #scale_x_date(labels = date_format("%b-%Y")) +
     xlab("") +
     facet_wrap(~ variable, ncol=1, scales='free_y') +
     theme(strip.text = element_text(size = 16))
+  if (color == 'none') p <- p + geom_point() + geom_path()
+  else p <- p + geom_point(aes_string(color=color)) + geom_path(aes_string(color=color))
   if (inludeZero) p <- p + expand_limits(y=0)
   
   print(p)
