@@ -83,7 +83,7 @@ plotLoadProfile_dygraph <- function (dat, var, type) {
     mutate(id = paste0(year,week,day))
   
   plot_dat_ts <- setNames(xts(as.matrix(plot_dat$var),
-                              order.by = as.POSIXct(strptime(paste(1,1,1,plot_dat$hour), format = "%Y %m %d %H")),
+                              order.by = as.POSIXct(strptime(paste(100,1,1,plot_dat$hour), format = "%Y %m %d %H")),
                               tzone="GMT"),
                           paste0(var,'_mean'))
   
