@@ -78,7 +78,10 @@ plotLoadProfile_dygraph <- function (dat, var, type) {
     summarise_(var = lazyeval::interp(~mean(var, na.rm = TRUE), var = as.name(var))) %>%
     mutate(id = paste0(year,week,day))
   
-  plot_dat_ts <- setNames(xts(as.matrix(plot_dat$var), order.by = as.POSIXct(strptime(paste(2000,1,1,plot_dat$hour), format = "%Y %m %d %H"))), paste0(var,'_mean'))
+  plot_dat_ts <- setNames(xts(as.matrix(plot_dat$var),
+                              order.by = as.POSIXct(strptime(paste(1,1,1,plot_dat$hour), format = "%Y %m %d %H")),
+                              tzone="GMT"),
+                          paste0(var,'_mean'))
   
   yrng <- c(0,round(qnorm(0.99, mean=mean(plot_dat_all$var, na.rm=TRUE), sd=sd(plot_dat_all$var, na.rm=TRUE))))
   
