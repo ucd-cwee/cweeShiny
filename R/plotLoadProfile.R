@@ -8,7 +8,7 @@
 #' @return \code{NULL}
 #' @export
 
-plotLoadProfile_ggplot <- function (dat, var, type, color, labelMax=FALSE, yRng) {
+plotLoadProfile_ggplot <- function (dat, var, type, color, labelMax=FALSE, yRng, plotAll=FALSE) {
   
   if (type == "Weekday") {
     days <- c(2,3,4,5,6)
@@ -22,26 +22,30 @@ plotLoadProfile_ggplot <- function (dat, var, type, color, labelMax=FALSE, yRng)
     group_by(hour) %>%
     summarise_(var = lazyeval::interp(~mean(var, na.rm = TRUE), var = as.name(var)))
   
-  plot_dat_all <- dat %>%
-    filter(dow %in% days) %>%
-    filter_(lazyeval::interp(~is.finite(var), var = as.name(var))) %>%
-    group_by(year,season,month,week,day,hour) %>%
-    summarise_(var = lazyeval::interp(~mean(var, na.rm = TRUE), var = as.name(var))) %>%
-    mutate(id = paste0(year,week,day))
+  if (plotAll) {
+    plot_dat_all <- dat %>%
+      filter(dow %in% days) %>%
+      filter_(lazyeval::interp(~is.finite(var), var = as.name(var))) %>%
+      group_by(year,season,month,week,day,hour) %>%
+      summarise_(var = lazyeval::interp(~mean(var, na.rm = TRUE), var = as.name(var))) %>%
+      mutate(id = paste0(year,week,day))
+  }
   
-  maxVal <- ungroup(plot_dat_all) %>%
-    filter(var == max(var, na.rm=TRUE)) %>%
-    mutate(lab = format(ymd_hms(paste(year,month,day,hour,0,0, sep='-')), "%I %p - %b %d, %Y"))
+  if (plotAll & labelMax)  {
+    maxVal <- ungroup(plot_dat_all) %>%
+      filter(var == max(var, na.rm=TRUE)) %>%
+      mutate(lab = format(ymd_hms(paste(year,month,day,hour,0,0, sep='-')), "%I %p - %b %d, %Y"))
+  }
   
   p <- ggplot(plot_dat, aes(hour, var))
-  if (color != 'none') p <- p + geom_line(data=plot_dat_all, aes_string("hour", "var", group="id", color=color))
-  if (color == 'none') p <- p + geom_line(data=plot_dat_all, aes(hour, var, group=id), color="gray")
+  if (plotAll & color != 'none') p <- p + geom_line(data=plot_dat_all, aes_string("hour", "var", group="id", color=color))
+  if (plotAll & color == 'none') p <- p + geom_line(data=plot_dat_all, aes(hour, var, group=id), color="gray")
   p <- p + geom_line(size=2) +
     geom_point(size=4) +
     ylab(var) +
     ggtitle(paste(type, 'Average')) +
     theme(plot.title=element_text(face="bold", size=20))
-  if (labelMax) p <- p + geom_point(data=maxVal, size=3) +
+  if (plotAll & labelMax) p <- p + geom_point(data=maxVal, size=3) +
     geom_text(data=maxVal, aes(label=lab), vjust=1.2, size=6, fontface=2)
   if (!missing(yRng)) p <- p + coord_cartesian(ylim=yRng)
   
